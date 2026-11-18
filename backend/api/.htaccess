@@ -1,0 +1,30 @@
+RewriteEngine On
+
+# ---- Public ----
+RewriteRule ^games/?$ games.php [L,QSA]
+RewriteRule ^stations/?$ stations.php [L,QSA]
+RewriteRule ^leaderboard/?$ leaderboard.php [L,QSA]
+RewriteRule ^bookings/?$ bookings.php [L,QSA]
+RewriteRule ^bookings/cancel/?$ bookings_cancel.php [L,QSA]
+
+# ---- Admin (staff) ----
+RewriteRule ^admin/auth/?$ admin/auth.php [L,QSA]
+RewriteRule ^admin/dashboard/?$ admin/dashboard.php [L,QSA]
+RewriteRule ^admin/bookings/?$ admin/bookings.php [L,QSA]
+RewriteRule ^admin/bookings/([0-9]+)/status/?$ admin/bookings_status.php?id=$1 [L,QSA]
+RewriteRule ^admin/charges/apply/?$ admin/apply_charge.php [L,QSA]
+RewriteRule ^admin/leaderboard/?$ admin/leaderboard_submit.php [L,QSA]
+
+# ---- Super Admin ----
+RewriteRule ^admin/games/?$ admin/games_manage.php [L,QSA]
+RewriteRule ^admin/games/([0-9]+)/?$ admin/games_manage.php?id=$1 [L,QSA]
+RewriteRule ^admin/stations/?$ admin/stations_manage.php [L,QSA]
+RewriteRule ^admin/stations/([0-9]+)/?$ admin/stations_manage.php?id=$1 [L,QSA]
+RewriteRule ^admin/charges/?$ admin/charges_manage.php [L,QSA]
+RewriteRule ^admin/charges/([0-9]+)/?$ admin/charges_manage.php?id=$1 [L,QSA]
+RewriteRule ^admin/staff/?$ admin/staff_manage.php [L,QSA]
+RewriteRule ^admin/staff/([0-9]+)/?$ admin/staff_manage.php?id=$1 [L,QSA]
+RewriteRule ^admin/transactions/?$ admin/transactions.php [L,QSA]
+
+# Note: the .php files also work directly with ?id=, e.g.
+# PUT /api/admin/bookings_status.php?id=12  -- if mod_rewrite is unavailable.
