@@ -57,6 +57,21 @@ export default function BookingPage() {
     return <div className="container" style={{ padding: 60, textAlign: 'center', color: 'var(--text-muted)' }}>Loading game details…</div>;
   }
 
+  if (game.status === 'unavailable') {
+    return (
+      <div className="container" style={{ maxWidth: 560, padding: '48px 24px', textAlign: 'center' }}>
+        <div className="card" style={{ padding: 40 }}>
+          <span className="badge badge-cancelled">Unavailable</span>
+          <h1 style={{ fontSize: 24, margin: '16px 0 8px' }}>{game.title}</h1>
+          <p style={{ color: 'var(--text-muted)', marginBottom: 24 }}>
+            This game is currently unavailable for booking. Please choose another title.
+          </p>
+          <Link to="/" className="btn btn-primary">&larr; Back to games</Link>
+        </div>
+      </div>
+    );
+  }
+
   if (confirmation) {
     return <ConfirmationScreen booking={confirmation} />;
   }

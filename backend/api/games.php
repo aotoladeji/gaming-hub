@@ -2,8 +2,8 @@
 require_once __DIR__ . '/../bootstrap.php';
 
 /**
- * GET /api/games            -> list all available games
- * GET /api/games?all=1      -> list all games regardless of status (used by Super Admin panel)
+ * GET /api/games            -> list all games (including unavailable, so the UI can show them disabled)
+ * GET /api/games?all=1      -> same list; kept for backwards compatibility
  * GET /api/games?id=5       -> single game
  */
 
@@ -22,15 +22,10 @@ if (isset($_GET['id'])) {
     Response::ok($game);
 }
 
-$showAll = isset($_GET['all']) && $_GET['all'] === '1';
-
 $sql = 'SELECT g.*,
           (SELECT COUNT(*) FROM stations s WHERE s.console_type = g.console_type AND s.status != "offline") AS available_slots
-        FROM games g';
-if (!$showAll) {
-    $sql .= ' WHERE g.status = "available"';
-}
-$sql .= ' ORDER BY g.console_type ASC, g.display_order ASC, g.title ASC';
+        FROM games g
+        ORDER BY g.console_type ASC, g.display_order ASC, g.title ASC';
 
 $games = $db->query($sql)->fetchAll();
 

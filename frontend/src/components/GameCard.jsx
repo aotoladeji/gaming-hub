@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 export default function GameCard({ game }) {
   const navigate = useNavigate();
-  const slotsLeft = game.available_slots ?? '—';
+  const unavailable = game.status === 'unavailable';
+  const slotsLeft = unavailable ? '—' : (game.available_slots ?? '—');
 
   return (
     <div
@@ -25,6 +26,11 @@ export default function GameCard({ game }) {
         >
           {game.console_type}
         </span>
+        {unavailable && (
+          <span className="badge badge-cancelled" style={{ position: 'absolute', top: 10, right: 10 }}>
+            Unavailable
+          </span>
+        )}
       </div>
 
       <div style={{ padding: 18, display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
@@ -46,9 +52,10 @@ export default function GameCard({ game }) {
         <button
           className="btn btn-primary"
           style={{ marginTop: 'auto' }}
+          disabled={unavailable}
           onClick={() => navigate(`/book/${game.id}`)}
         >
-          Book Now
+          {unavailable ? 'Unavailable' : 'Book Now'}
         </button>
       </div>
     </div>
