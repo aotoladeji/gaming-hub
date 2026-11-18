@@ -13,17 +13,18 @@ function formatTime(totalSeconds) {
  * snapshot, so the UI stays live between dashboard refreshes.
  */
 export default function CountdownTimer({ remainingSeconds, totalSeconds, size = 64 }) {
-  const [remaining, setRemaining] = useState(remainingSeconds);
+  const [remaining, setRemaining] = useState(remainingSeconds ?? 0);
 
   useEffect(() => {
-    setRemaining(remainingSeconds);
-  }, [remainingSeconds]);
+    const snapshot = Math.max(0, remainingSeconds ?? 0);
+    setRemaining(snapshot);
+    if (snapshot <= 0) return;
 
-  useEffect(() => {
-    if (remaining <= 0) return;
-    const interval = setInterval(() => setRemaining((r) => Math.max(0, r - 1)), 1000);
+    const deadline = Date.now() + snapshot * 1000;
+    const tick = () => setRemaining(Math.max(0, Math.ceil((deadline - Date.now()) / 1000)));
+    const interval = setInterval(tick, 250);
     return () => clearInterval(interval);
-  }, [remaining]);
+  }, [remainingSeconds]);
 
   const pct = totalSeconds ? Math.max(0, Math.min(1, remaining / totalSeconds)) : 0;
   const isEnding = remaining <= 300; // last 5 minutes
