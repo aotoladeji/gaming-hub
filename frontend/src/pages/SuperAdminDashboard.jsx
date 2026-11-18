@@ -8,6 +8,21 @@ import AnalyticsDashboard from './AnalyticsDashboard';
 
 const TABS = ['Analytics', 'Games', 'Charges', 'Staff', 'Transactions'];
 
+const GAME_CATEGORIES = [
+  'Uncategorized',
+  'Action',
+  'Adventure',
+  'Casual',
+  'Fighting',
+  'Puzzle',
+  'Racing',
+  'Role-Playing',
+  'Shooter',
+  'Simulation',
+  'Sports',
+  'Strategy',
+];
+
 export default function SuperAdminDashboard() {
   const [tab, setTab] = useState('Analytics');
   const navigate = useNavigate();
@@ -121,7 +136,9 @@ function GamesPanel() {
         </div>
         <div>
           <label>Category</label>
-          <input value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} placeholder="e.g. Sports, Strategy" />
+          <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
+            {GAME_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
         </div>
         <div>
           <label>Price / hour (₦)</label>
